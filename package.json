@@ -4,7 +4,7 @@
   "description": "Binds a Cheerio dom to its reacts dom with custom tags",
   "license": "MIT",
   "author": "ocboogie",
-  "repository": "https://github.com/ocboogie/action-hub/tree/2.0/packages/cheerio-react-bind",
+  "repository": "https://github.com/ocboogie/cheerio-react-bind",
   "main": "./lib/cheerio-react-bind.js",
   "scripts": {
     "lint": "eslint --cache --format=node_modules/eslint-formatter-pretty .",
