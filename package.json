@@ -13,6 +13,14 @@
     "prod": "cross-env NODE_ENV=production webpack",
     "test": "jest"
   },
+  "keywords": [
+    "react",
+    "cheerio",
+    "bind",
+    "binding",
+    "dom",
+    "virtual-dom"
+  ],
   "jest": {
     "testMatch": [
       "**/tests/**/*.js?(x)"
