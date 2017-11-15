@@ -43,3 +43,16 @@ setTimeout(() => {
 ```
 
 Better examples in the examples folder
+
+## Contributing
+ 1. Install:
+```
+git clone https://github.com/ocboogie/cheerio-react-bind.git cheerio-react-bind
+cd cheerio-react-bind
+npm install
+```
+ 2. Create a feature branch
+ 3. Make some changes
+ 4. Follow linting rules
+ 5. Successfully run tests
+ 6. Create a pull request
