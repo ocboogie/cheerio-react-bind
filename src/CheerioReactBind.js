@@ -16,6 +16,7 @@ export default class CheerioReactBind extends React.Component {
         const $child = this.props.$(elem);
         children.push(
           <CheerioReactBind
+            errorHandler={this.props.errorHandler}
             key={index}
             $={this.props.$}
             $elem={$child}
