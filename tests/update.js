@@ -18,7 +18,7 @@ const notValidCheerioElem = {};
 test("throws when not valid cheerio element", () => {
   expect(() => {
     update(notValidCheerioElem);
-  }).toThrow(TypeError("`$elem` is not a valid cheerio element"));
+  }).toThrow(TypeError('"$elem" is not a valid cheerio element'));
 });
 
 const notRegistered = {
@@ -29,6 +29,6 @@ test("throws when not registered", () => {
   expect(() => {
     update(notRegistered);
   }).toThrow(
-    TypeError("`$elem` has not been registered with a `CheerioReactBind`")
+    TypeError('"$elem" has not been registered with a "CheerioReactBind"')
   );
 });
