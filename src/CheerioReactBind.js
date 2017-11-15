@@ -41,8 +41,12 @@ export default class CheerioReactBind extends React.Component {
     const { $elem } = this.props;
     const tagName = $elem.prop("tagName").toLowerCase();
     if (!Object.prototype.hasOwnProperty.call(this.props.tags, tagName)) {
-      // TODO
-      return <div />;
+      const errMsg = `Unknown tag "${tagName}".`;
+      if (this.props.errorHandler) {
+        this.props.errorHandler(errMsg);
+        return <div />;
+      }
+      throw new TypeError(errMsg);
     }
     const Component = this.props.tags[tagName];
     return (
@@ -76,6 +80,7 @@ CheerioReactBind.propTypes = {
     }
   },
   // eslint-disable-next-line react/forbid-prop-types
-  tags: PropTypes.object.isRequired
+  tags: PropTypes.object.isRequired,
+  errorHandler: PropTypes.func
 };
 /* eslint-enable react/require-default-props, consistent-return */
