@@ -37,3 +37,29 @@ test("modifying the Cheerio dom updates the React dom with custom tags", () => {
   tree = component.toJSON();
   expect(tree).toMatchSnapshot();
 });
+
+test("throwns when there is a unknown tag", () => {
+  renderer.create(
+    <CheerioReactBind tags={tags} $elem={$("div").first()} $={$} />
+  );
+  $("div").append("<notag />");
+  expect(() => {
+    $("div").data("update")();
+  }).toThrow(new TypeError('Unknown tag "notag".'));
+});
+
+test("errorHandling runs when an error is thrown", () => {
+  const mockErrorHandling = jest.fn();
+  renderer.create(
+    <CheerioReactBind
+      errorHandler={mockErrorHandling}
+      tags={tags}
+      $elem={$("div").first()}
+      $={$}
+    />
+  );
+  $("div").append("<notag />");
+  $("div").data("update")();
+
+  expect(mockErrorHandling.mock.calls[0][0]).toBe('Unknown tag "notag".');
+});
