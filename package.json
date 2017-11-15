@@ -12,6 +12,7 @@
     "build": "cross-env NODE_ENV=development webpack",
     "prod": "rimraf lib && cross-env NODE_ENV=production webpack",
     "test": "jest",
+    "precommit": "npm run lint && npm run test",
     "prepack": "npm run lint && npm run test && npm run prod"
   },
   "keywords": [
@@ -45,6 +46,7 @@
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-prettier": "^2.3.1",
     "eslint-plugin-react": "^7.4.0",
+    "husky": "^0.14.3",
     "jest": "^21.2.1",
     "lodash": "^4.17.4",
     "prettier": "^1.8.1",
