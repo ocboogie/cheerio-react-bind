@@ -10,7 +10,7 @@
     "lint": "eslint --cache --format=node_modules/eslint-formatter-pretty .",
     "format": "npm run lint -- --fix",
     "build": "cross-env NODE_ENV=development webpack",
-    "prod": "rimraf lib && cross-env NODE_ENV=production webpack",
+    "prod": "cross-env NODE_ENV=production webpack",
     "test": "jest",
     "precommit": "npm run lint && npm run test",
     "prepack": "npm run lint && npm run test && npm run prod"
@@ -51,7 +51,6 @@
     "lodash": "^4.17.4",
     "prettier": "^1.8.1",
     "react-test-renderer": "^16.0.0",
-    "rimraf": "^2.6.2",
     "unminified-webpack-plugin": "^1.4.1",
     "webpack": "^3.8.1"
   },
