@@ -3,7 +3,7 @@ import React from "react";
 import Cheerio from "cheerio";
 import renderer from "react-test-renderer";
 
-import CheerioReactBind from "../src/index";
+import CheerioReactBind, { update } from "../src/index";
 
 const tags = {
   div: ({ children }) => <div>{children}</div>,
@@ -28,12 +28,12 @@ test("modifying the Cheerio dom updates the React dom with custom tags", () => {
   expect(tree).toMatchSnapshot();
 
   $("div").append(`<div>test</div>`);
-  $("div").data("update")();
+  update($("div"));
   tree = component.toJSON();
   expect(tree).toMatchSnapshot();
 
   $("p").text("Paragraph test");
-  $("p").data("update")();
+  update($("p"));
   tree = component.toJSON();
   expect(tree).toMatchSnapshot();
 });
@@ -44,7 +44,7 @@ test("throwns when there is a unknown tag", () => {
   );
   $("div").append("<notag />");
   expect(() => {
-    $("div").data("update")();
+    update($("div"));
   }).toThrow(new TypeError('Unknown tag "notag".'));
 });
 
@@ -59,7 +59,7 @@ test("errorHandling runs when an error is thrown", () => {
     />
   );
   $("div").append("<notag />");
-  $("div").data("update")();
+  update($("div"));
 
   expect(mockErrorHandling.mock.calls[0][0]).toBe('Unknown tag "notag".');
 });
