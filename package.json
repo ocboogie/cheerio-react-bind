@@ -23,6 +23,9 @@
     "dom",
     "virtual-dom"
   ],
+  "files": [
+    "lib"
+  ],
   "jest": {
     "setupFiles": [
       "<rootDir>/testSetup/enzymeSetup.js"
