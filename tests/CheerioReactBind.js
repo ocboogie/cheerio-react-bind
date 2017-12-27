@@ -62,3 +62,62 @@ describe("error handling", () => {
     expect(mockErrorHandling.mock.calls[0][0]).toBe('Unknown tag "notag".');
   });
 });
+
+describe("tagRenderer", () => {
+  test("passed children, attributes and tagName", () => {
+    const $mock = Cheerio.load(
+      `
+    <foo bar="baz"><qux /></foo>
+  `,
+      { xmlMode: true }
+    );
+    const tagRenderer = jest.fn(() => <div />);
+    Enzyme.mount(
+      <CheerioReactBind
+        tagRenderer={tagRenderer}
+        $elem={$mock("foo").first()}
+        $={$mock}
+      />
+    );
+    expect(tagRenderer.mock.calls[0][0]).toMatchObject({
+      tagName: "foo",
+      attributes: { bar: "baz" }
+    });
+    expect(() =>
+      Enzyme.shallow(tagRenderer.mock.calls[0][0].children[0])
+    ).not.toThrow();
+  });
+
+  test("renders", () => {
+    const $mock = Cheerio.load(
+      `
+    <foo bar="baz"><qux>quux</qux></foo>
+  `,
+      { xmlMode: true }
+    );
+    const tagRenderer = ({ tagName, children }) => {
+      if (tagName === "foo") {
+        return <span>{children}</span>;
+      } else if (tagName === "qux") {
+        return <h2>{children}</h2>;
+      }
+      return null;
+    };
+    const wrapper = Enzyme.mount(
+      <CheerioReactBind
+        tagRenderer={tagRenderer}
+        $elem={$mock("foo").first()}
+        $={$mock}
+      />
+    );
+    expect(wrapper.html()).toMatchSnapshot();
+  });
+});
+
+test("throwns when then neither tags nor tagRenderer", () => {
+  expect(() => {
+    Enzyme.render(<CheerioReactBind $elem={$("div").first()} $={$} />);
+  }).toThrow(
+    new TypeError('You must pass a "tagRenderer" prop or a "tags" prop.')
+  );
+});

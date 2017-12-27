@@ -21,6 +21,7 @@ export default class CheerioReactBind extends React.Component {
             $={this.props.$}
             $elem={$child}
             tags={this.props.tags}
+            tagRenderer={this.props.tagRenderer}
           />
         );
       });
@@ -41,6 +42,21 @@ export default class CheerioReactBind extends React.Component {
   render() {
     const { $elem } = this.props;
     const tagName = $elem.prop("tagName").toLowerCase();
+    if (!this.props.tagRenderer && !this.props.tags) {
+      throw new TypeError(
+        'You must pass a "tagRenderer" prop or a "tags" prop.'
+      );
+    }
+
+    if (this.props.tagRenderer) {
+      const TagHander = this.props.tagRenderer;
+      return (
+        <TagHander tagName={tagName} attributes={this.state.attributes}>
+          {this.state.children}
+        </TagHander>
+      );
+    }
+
     if (!Object.prototype.hasOwnProperty.call(this.props.tags, tagName)) {
       const errMsg = `Unknown tag "${tagName}".`;
       if (this.props.errorHandler) {
@@ -81,7 +97,8 @@ CheerioReactBind.propTypes = {
     }
   },
   // eslint-disable-next-line react/forbid-prop-types
-  tags: PropTypes.object.isRequired,
+  tags: PropTypes.object,
+  tagRenderer: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
   errorHandler: PropTypes.func
 };
 /* eslint-enable react/require-default-props, consistent-return */

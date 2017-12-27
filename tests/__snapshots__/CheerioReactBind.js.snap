@@ -5,3 +5,5 @@ exports[`modifying the Cheerio dom updates the React dom with custom tags 1`] = 
 exports[`modifying the Cheerio dom updates the React dom with custom tags 2`] = `"<div><p>Paragraph</p><div>test</div></div>"`;
 
 exports[`modifying the Cheerio dom updates the React dom with custom tags 3`] = `"<div><p>Paragraph test</p><div>test</div></div>"`;
+
+exports[`tagRenderer renders 1`] = `"<span><h2>quux</h2></span>"`;
