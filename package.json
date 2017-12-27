@@ -24,6 +24,9 @@
     "virtual-dom"
   ],
   "jest": {
+    "setupFiles": [
+      "<rootDir>/testSetup/enzymeSetup.js"
+    ],
     "testMatch": [
       "**/tests/**/*.js?(x)"
     ]
@@ -36,6 +39,8 @@
     "babel-preset-react": "^6.24.1",
     "clean-webpack-plugin": "^0.1.17",
     "cross-env": "^5.1.1",
+    "enzyme": "^3.2.0",
+    "enzyme-adapter-react-16": "^1.1.1",
     "eslint": "^4.10.0",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-config-prettier": "^2.7.0",
@@ -47,9 +52,10 @@
     "eslint-plugin-prettier": "^2.3.1",
     "eslint-plugin-react": "^7.4.0",
     "husky": "^0.14.3",
-    "jest": "^21.2.1",
+    "jest": "^22.0.4",
     "lodash": "^4.17.4",
     "prettier": "^1.8.1",
+    "react-dom": "^16.2.0",
     "react-test-renderer": "^16.0.0",
     "unminified-webpack-plugin": "^1.4.1",
     "webpack": "^3.8.1"
