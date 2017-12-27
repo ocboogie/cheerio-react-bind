@@ -64,3 +64,5 @@ flow-typed/
 dist/
 release/
 lib/
+
+examples/
