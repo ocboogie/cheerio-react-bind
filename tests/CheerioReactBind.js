@@ -20,7 +20,7 @@ const $ = Cheerio.load(
   { xmlMode: true }
 );
 
-test("modifying the Cheerio dom updates the React dom with custom tags", () => {
+test("update the Cheerio dom when the React dom is updated", () => {
   const wrapper = Enzyme.mount(
     <CheerioReactBind tags={tags} $elem={$("div").first()} $={$} />
   );
@@ -36,7 +36,7 @@ test("modifying the Cheerio dom updates the React dom with custom tags", () => {
 });
 
 describe("error handling", () => {
-  test("throwns when there is a unknown tag", () => {
+  test("throws when there is a unknown tag", () => {
     Enzyme.mount(
       <CheerioReactBind tags={tags} $elem={$("div").first()} $={$} />
     );
@@ -64,7 +64,7 @@ describe("error handling", () => {
 });
 
 describe("tagRenderer", () => {
-  test("passed children, attributes and tagName", () => {
+  test("gets passed children, attributes and tagName", () => {
     const $mock = Cheerio.load(
       `
     <foo bar="baz"><qux /></foo>
@@ -114,7 +114,7 @@ describe("tagRenderer", () => {
   });
 });
 
-test("throwns when then neither tags nor tagRenderer", () => {
+test("throws when neither tags nor tagRenderer are passed", () => {
   expect(() => {
     Enzyme.render(<CheerioReactBind $elem={$("div").first()} $={$} />);
   }).toThrow(
