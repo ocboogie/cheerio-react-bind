@@ -2,7 +2,7 @@ import ReactDOM from "react-dom";
 import React from "react";
 import Cheerio from "cheerio";
 
-import CheerioReactBind, { update } from "../../../";
+import CheerioReactBind from "../../../";
 
 // Custom tags of type { [key: string]: react.component; } in typescript
 const tags = {
@@ -40,12 +40,12 @@ $("#root").append("<bigtext>Very big text</bigtext>");
 // Nothing changed on the view yet
 setTimeout(() => {
   // Now the view changed
-  update($("#root"));
+  $("#root").update();
 }, 1000);
 
 setTimeout(() => {
   $("#root").append("<div>An error will be thrown</div>");
-  update($("#root"));
+  $("#root").update();
   // This will throw an error because div is not a tag
   // Note: normal HTML tags are not allowed
   // This is why div is an unknown tag

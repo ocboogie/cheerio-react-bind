@@ -2,7 +2,7 @@ import ReactDOM from "react-dom";
 import React from "react";
 import Cheerio from "cheerio";
 
-import CheerioReactBind, { update } from "../../../";
+import CheerioReactBind from "../../../";
 
 // Custom tags of type { [key: string]: react.component; } in typescript
 const tags = {
@@ -45,6 +45,6 @@ setInterval(() => {
   // Append the text tag to the grid tag
   grid.append(`<text>${i}</text>`);
   // Update the grid
-  update(grid);
+  grid.update();
   i += 1;
 }, 1000);
