@@ -121,3 +121,28 @@ test("throwns when then neither tags nor tagRenderer", () => {
     new TypeError('You must pass a "tagRenderer" prop or a "tags" prop.')
   );
 });
+
+test("tagRenderer gets passed the location of the tag", () => {
+  const $mock = Cheerio.load(
+    `
+    <div>
+      <foo></foo>
+      <bar><baz></baz></bar>
+    </div>
+`,
+    { xmlMode: true }
+  );
+  const tagRenderer = ({ tagName, location, children }) => {
+    if (tagName === "baz") {
+      expect(location).toBe("/1:bar/0:baz");
+    }
+    return <div>{children}</div>;
+  };
+  Enzyme.mount(
+    <CheerioReactBind
+      tagRenderer={tagRenderer}
+      $elem={$mock("div").first()}
+      $={$mock}
+    />
+  );
+});

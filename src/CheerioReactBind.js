@@ -22,6 +22,9 @@ export default class CheerioReactBind extends React.Component {
             $elem={$child}
             tags={this.props.tags}
             tagRenderer={this.props.tagRenderer}
+            location={`${
+              this.props.location === "/" ? "" : this.props.location
+            }/${$child.index()}:${$child.prop("tagName").toLowerCase()}`}
           />
         );
       });
@@ -51,7 +54,11 @@ export default class CheerioReactBind extends React.Component {
     if (this.props.tagRenderer) {
       const TagHander = this.props.tagRenderer;
       return (
-        <TagHander tagName={tagName} attributes={this.state.attributes}>
+        <TagHander
+          location={this.props.location}
+          tagName={tagName}
+          attributes={this.state.attributes}
+        >
           {this.state.children}
         </TagHander>
       );
@@ -99,6 +106,11 @@ CheerioReactBind.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   tags: PropTypes.object,
   tagRenderer: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
-  errorHandler: PropTypes.func
+  errorHandler: PropTypes.func,
+  location: PropTypes.string
 };
 /* eslint-enable react/require-default-props, consistent-return */
+
+CheerioReactBind.defaultProps = {
+  location: "/"
+};
