@@ -3,7 +3,7 @@ import React from "react";
 import Cheerio from "cheerio";
 import * as Enzyme from "enzyme";
 
-import CheerioReactBind, { update } from "../src/index";
+import CheerioReactBind from "../src/index";
 
 const tags = {
   div: ({ children }) => <div>{children}</div>,
@@ -27,11 +27,11 @@ test("update the Cheerio dom when the React dom is updated", () => {
   expect(wrapper.html()).toMatchSnapshot();
 
   $("div").append(`<div>test</div>`);
-  update($("div"));
+  $("div").update();
   expect(wrapper.html()).toMatchSnapshot();
 
   $("p").text("Paragraph test");
-  update($("p"));
+  $("p").update();
   expect(wrapper.html()).toMatchSnapshot();
 });
 
@@ -42,7 +42,7 @@ describe("error handling", () => {
     );
     $("div").append("<notag />");
     expect(() => {
-      update($("div"));
+      $("div").update();
     }).toThrow(new TypeError('Unknown tag "notag".'));
   });
 
@@ -57,7 +57,7 @@ describe("error handling", () => {
       />
     );
     $("div").append("<notag />");
-    update($("div"));
+    $("div").update();
 
     expect(mockErrorHandling.mock.calls[0][0]).toBe('Unknown tag "notag".');
   });

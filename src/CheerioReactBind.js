@@ -6,6 +6,12 @@ export default class CheerioReactBind extends React.Component {
     super(props);
     this.props.$elem.data("update", this.update.bind(this));
     this.update(true);
+    if (this.props.location === "/") {
+      // eslint-disable-next-line func-names
+      this.props.$.fn.update = function() {
+        this.data("update")();
+      };
+    }
   }
 
   update(first = false) {
