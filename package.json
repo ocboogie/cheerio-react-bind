@@ -25,7 +25,8 @@
     "format": "prettier --write ./{src,tests}/**/*.ts{,x} & npm run lint -- --fix",
     "test": "jest",
     "precommit": "lint-staged",
-    "prepush": "npm test"
+    "prepush": "npm test",
+    "prepublish": "npm run build"
   },
   "lint-staged": {
     "*.ts": [
