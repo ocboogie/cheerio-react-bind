@@ -917,14 +917,6 @@ chalk@^2.0.0:
     escape-string-regexp "^1.0.5"
     supports-color "^4.0.0"
 
-cheerio-react-bind@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/cheerio-react-bind/-/cheerio-react-bind-1.0.1.tgz#dada8f62215316bcf52b4690eea3d95e1e1e556c"
-  dependencies:
-    cheerio "^1.0.0-rc.2"
-    prop-types "^15.6.0"
-    react "^16.0.0"
-
 cheerio@^1.0.0-rc.2:
   version "1.0.0-rc.2"
   resolved "https://registry.yarnpkg.com/cheerio/-/cheerio-1.0.0-rc.2.tgz#4b9f53a81b27e4d5dac31c0ffd0cfa03cc6830db"
@@ -3055,15 +3047,6 @@ rc@^1.1.7:
 react-dom@^16.2.0:
   version "16.2.0"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.2.0.tgz#69003178601c0ca19b709b33a83369fe6124c044"
-  dependencies:
-    fbjs "^0.8.16"
-    loose-envify "^1.1.0"
-    object-assign "^4.1.1"
-    prop-types "^15.6.0"
-
-react@^16.0.0:
-  version "16.0.0"
-  resolved "https://registry.yarnpkg.com/react/-/react-16.0.0.tgz#ce7df8f1941b036f02b2cca9dbd0cb1f0e855e2d"
   dependencies:
     fbjs "^0.8.16"
     loose-envify "^1.1.0"
