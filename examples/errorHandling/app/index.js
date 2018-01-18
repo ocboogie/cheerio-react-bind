@@ -1,8 +1,7 @@
 import ReactDOM from "react-dom";
 import React from "react";
 import Cheerio from "cheerio";
-
-import CheerioReactBind from "../../../";
+import CheerioReactBind from "cheerio-react-bind";
 
 // Custom tags of type { [key: string]: react.component; } in typescript
 const tags = {
