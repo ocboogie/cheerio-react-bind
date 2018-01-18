@@ -107,6 +107,19 @@ describe("tagRenderer", () => {
     ).not.toThrow();
   });
 
+  test("gets passed args from tagRendererArgs prop", () => {
+    const tagRenderer = jest.fn(() => <div />);
+    Enzyme.mount(
+      <CheerioReactBind
+        tagRenderer={tagRenderer}
+        tagRendererArgs={{ foo: "bar" }}
+        $elem={$("div").first()}
+        $={$}
+      />
+    );
+    expect(tagRenderer.mock.calls[0][0].foo).toBe("bar");
+  });
+
   test("renders", () => {
     const $mock = Cheerio.load(
       `

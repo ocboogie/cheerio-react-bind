@@ -16,9 +16,14 @@ export interface CheerioReactBindProps {
   $elem: Cheerio;
   $: CheerioStatic;
   tags?: {
-    [tagName: string]: React.ComponentClass<any> | React.StatelessComponent<any>;
+    [tagName: string]:
+      | React.ComponentClass<any>
+      | React.StatelessComponent<any>;
   };
-  tagRenderer?: React.ComponentClass<TagRendererProps> | React.StatelessComponent<TagRendererProps>;
+  tagRenderer?:
+    | React.ComponentClass<TagRendererProps>
+    | React.StatelessComponent<TagRendererProps>;
+  tagRendererArgs?: { [key: string]: any };
   errorHandler?: (errorMsg: string) => void;
   location?: string;
 }
@@ -42,7 +47,9 @@ export default class CheerioReactBind extends React.Component<
     super(props);
 
     if (!this.props.tagRenderer && !this.props.tags) {
-      throw new TypeError('You must pass a "tagRenderer" prop or a "tags" prop.');
+      throw new TypeError(
+        'You must pass a "tagRenderer" prop or a "tags" prop.'
+      );
     }
 
     if (this.props.location) {
@@ -95,6 +102,7 @@ export default class CheerioReactBind extends React.Component<
               location={`${this.location}${$child.index()}:${$child
                 .prop("tagName")
                 .toLowerCase()}/`}
+              tagRendererArgs={this.props.tagRendererArgs}
             />
           );
         }
@@ -123,6 +131,7 @@ export default class CheerioReactBind extends React.Component<
           location={this.location}
           tagName={this.tagName}
           attributes={this.state.attributes}
+          {...this.props.tagRendererArgs}
         >
           {this.state.children}
         </TagHander>
