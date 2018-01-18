@@ -74,6 +74,6 @@
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
     "prop-types": "^15.6.0",
-    "react": "^16.0.0"
+    "react": "^16.2.0"
   }
 }
