@@ -54,6 +54,7 @@ test("able to have text nodes and tag nodes as children", () => {
 
 describe("error handling", () => {
   test("throws when there is a unknown tag", () => {
+    (Error.prototype as any).suppressReactErrorLogging = true;
     Enzyme.mount(
       <CheerioReactBind tags={tags} $elem={$("div").first()} $={$} />
     );
@@ -61,6 +62,7 @@ describe("error handling", () => {
     expect(() => {
       $("div").update();
     }).toThrow('Unknown tag name "notag".');
+    (Error.prototype as any).suppressReactErrorLogging = false;
   });
 
   test("errorHandling runs when an error is thrown", () => {
