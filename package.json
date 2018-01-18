@@ -21,8 +21,8 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "tsc",
-    "lint": "tslint -t codeFrame ./src/**/*.ts{,x}",
-    "format": "prettier --write ./src/**/*.ts{,x} & npm run lint -- --fix",
+    "lint": "tslint -t codeFrame ./{src,tests}/**/*.ts{,x}",
+    "format": "prettier --write ./{src,tests}/**/*.ts{,x} & npm run lint -- --fix",
     "test": "jest",
     "precommit": "lint-staged",
     "prepush": "npm test"
