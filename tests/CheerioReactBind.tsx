@@ -1,9 +1,8 @@
-/* eslint react/prop-types: "off" */
-import React from "react";
-import Cheerio from "cheerio";
+import * as Cheerio from "cheerio";
 import * as Enzyme from "enzyme";
+import * as React from "react";
 
-import CheerioReactBind from "../src/index";
+import CheerioReactBind, { TagRendererProps } from "../src/cheerio-react-bind";
 
 const tags = {
   div: ({ children }) => <div>{children}</div>,
@@ -43,7 +42,7 @@ describe("error handling", () => {
     $("div").append("<notag />");
     expect(() => {
       $("div").update();
-    }).toThrow(new TypeError('Unknown tag "notag".'));
+    }).toThrow('Unknown tag name "notag".');
   });
 
   test("errorHandling runs when an error is thrown", () => {
@@ -59,7 +58,7 @@ describe("error handling", () => {
     $("div").append("<notag />");
     $("div").update();
 
-    expect(mockErrorHandling.mock.calls[0][0]).toBe('Unknown tag "notag".');
+    expect(mockErrorHandling.mock.calls[0][0]).toBe('Unknown tag name "notag".');
   });
 });
 
@@ -80,8 +79,8 @@ describe("tagRenderer", () => {
       />
     );
     expect(tagRenderer.mock.calls[0][0]).toMatchObject({
-      tagName: "foo",
-      attributes: { bar: "baz" }
+      attributes: { bar: "baz" },
+      tagName: "foo"
     });
     expect(() =>
       Enzyme.shallow(tagRenderer.mock.calls[0][0].children[0])
@@ -95,7 +94,10 @@ describe("tagRenderer", () => {
   `,
       { xmlMode: true }
     );
-    const tagRenderer = ({ tagName, children }) => {
+    const tagRenderer: React.StatelessComponent<TagRendererProps> = ({
+      tagName,
+      children
+    }) => {
       if (tagName === "foo") {
         return <span>{children}</span>;
       } else if (tagName === "qux") {
@@ -117,9 +119,7 @@ describe("tagRenderer", () => {
 test("throws when neither tags nor tagRenderer are passed", () => {
   expect(() => {
     Enzyme.render(<CheerioReactBind $elem={$("div").first()} $={$} />);
-  }).toThrow(
-    new TypeError('You must pass a "tagRenderer" prop or a "tags" prop.')
-  );
+  }).toThrow('You must pass a "tagRenderer" prop or a "tags" prop.');
 });
 
 test("tagRenderer gets passed the location of the tag", () => {
@@ -132,9 +132,13 @@ test("tagRenderer gets passed the location of the tag", () => {
 `,
     { xmlMode: true }
   );
-  const tagRenderer = ({ tagName, location, children }) => {
+  const tagRenderer: React.StatelessComponent<TagRendererProps> = ({
+    tagName,
+    location,
+    children
+  }) => {
     if (tagName === "baz") {
-      expect(location).toBe("/1:bar/0:baz");
+      expect(location).toBe("/1:bar/0:baz/");
     }
     return <div>{children}</div>;
   };

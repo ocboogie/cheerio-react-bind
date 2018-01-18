@@ -2,19 +2,6 @@
   "name": "cheerio-react-bind",
   "version": "1.0.0",
   "description": "Binds a Cheerio dom to its reacts dom with custom tags",
-  "license": "MIT",
-  "author": "ocboogie",
-  "repository": "https://github.com/ocboogie/cheerio-react-bind",
-  "main": "./lib/cheerio-react-bind.js",
-  "scripts": {
-    "lint": "eslint --cache --format=node_modules/eslint-formatter-pretty .",
-    "format": "npm run lint -- --fix",
-    "build": "cross-env NODE_ENV=development webpack",
-    "prod": "cross-env NODE_ENV=production webpack",
-    "test": "jest",
-    "precommit": "npm run lint && npm run test",
-    "prepack": "npm run lint && npm run test && npm run prod"
-  },
   "keywords": [
     "react",
     "cheerio",
@@ -23,47 +10,69 @@
     "dom",
     "virtual-dom"
   ],
+  "main": "./dist/cheerio-react-bind.js",
+  "typings": "dist/types/cheerio-react-bind.d.ts",
   "files": [
-    "lib"
+    "dist"
   ],
+  "author": "Eamon mikulec <boogie@mikulec.com>",
+  "repository": "https://github.com/ocboogie/cheerio-react-bind",
+  "license": "MIT",
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "tsc",
+    "lint": "tslint -t codeFrame ./src/**/*.ts",
+    "format": "prettier --write ./src/**/*.ts & npm run lint -- --fix",
+    "test": "jest",
+    "precommit": "lint-staged",
+    "prepush": "npm test"
+  },
+  "lint-staged": {
+    "*.ts": [
+      "prettier --write",
+      "tslint --fix",
+      "git add"
+    ]
+  },
   "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/tests/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
     "setupFiles": [
-      "<rootDir>/testSetup/enzymeSetup.js"
+      "<rootDir>/testSetup/enzymeSetup.ts"
     ],
-    "testMatch": [
-      "**/tests/**/*.js?(x)"
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx"
     ]
   },
   "devDependencies": {
-    "babel-core": "^6.26.0",
-    "babel-eslint": "^8.0.2",
-    "babel-loader": "^7.1.2",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-react": "^6.24.1",
-    "clean-webpack-plugin": "^0.1.17",
-    "cross-env": "^5.1.1",
+    "@types/cheerio": "^0.22.6",
+    "@types/jest": "^22.0.0",
+    "@types/node": "^8.5.2",
+    "@types/prop-types": "^15.5.2",
+    "@types/react": "^16.0.31",
     "enzyme": "^3.2.0",
     "enzyme-adapter-react-16": "^1.1.1",
-    "eslint": "^4.10.0",
-    "eslint-config-airbnb": "^16.1.0",
-    "eslint-config-prettier": "^2.7.0",
-    "eslint-formatter-pretty": "^1.3.0",
-    "eslint-loader": "^1.9.0",
-    "eslint-plugin-import": "^2.8.0",
-    "eslint-plugin-jest": "^21.2.0",
-    "eslint-plugin-jsx-a11y": "^6.0.2",
-    "eslint-plugin-prettier": "^2.3.1",
-    "eslint-plugin-react": "^7.4.0",
     "husky": "^0.14.3",
     "jest": "^22.0.4",
-    "lodash": "^4.17.4",
+    "lint-staged": "^6.0.0",
     "prettier": "^1.8.1",
     "react-dom": "^16.2.0",
-    "unminified-webpack-plugin": "^1.4.1",
-    "webpack": "^3.8.1"
+    "rimraf": "^2.6.2",
+    "ts-jest": "^22.0.0",
+    "tslint": "^5.8.0",
+    "tslint-config-prettier": "^1.6.0",
+    "tslint-config-standard": "^7.0.0",
+    "tslint-react": "^3.3.3",
+    "typescript": "^2.6.2"
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
+    "prop-types": "^15.6.0",
     "react": "^16.0.0"
   }
 }

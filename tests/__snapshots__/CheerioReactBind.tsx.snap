@@ -6,4 +6,4 @@ exports[`update the Cheerio dom when the React dom is updated 1`] = `"<div><p>Pa
 
 exports[`update the Cheerio dom when the React dom is updated 2`] = `"<div><p>Paragraph</p><div>test</div></div>"`;
 
-exports[`update the Cheerio dom when the React dom is updated 3`] = `"<div><p>Paragraph test</p><div>test</div></div>"`;
+exports[`update the Cheerio dom when the React dom is updated 3`] = `"<div><p>Paragraph</p><div>test</div></div>"`;
