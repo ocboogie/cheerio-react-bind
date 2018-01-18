@@ -1,5 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`able to have text nodes and tag nodes as children 1`] = `
+"<div>
+      foo
+      <p>bar</p>
+      baz
+    </div>"
+`;
+
 exports[`tagRenderer renders 1`] = `"<span><h2>quux</h2></span>"`;
 
 exports[`update the Cheerio dom when the React dom is updated 1`] = `"<div><p>Paragraph</p></div>"`;

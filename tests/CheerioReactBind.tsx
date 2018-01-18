@@ -34,6 +34,24 @@ test("update the Cheerio dom when the React dom is updated", () => {
   expect(wrapper.html()).toMatchSnapshot();
 });
 
+test("able to have text nodes and tag nodes as children", () => {
+  const $mock = Cheerio.load(
+    `
+    <div>
+      foo
+      <p>bar</p>
+      baz
+    </div>
+  `,
+    { xmlMode: true }
+  );
+
+  const wrapper = Enzyme.mount(
+    <CheerioReactBind tags={tags} $elem={$mock("div").first()} $={$mock} />
+  );
+  expect(wrapper.html()).toMatchSnapshot();
+});
+
 describe("error handling", () => {
   test("throws when there is a unknown tag", () => {
     Enzyme.mount(
@@ -58,7 +76,9 @@ describe("error handling", () => {
     $("div").append("<notag />");
     $("div").update();
 
-    expect(mockErrorHandling.mock.calls[0][0]).toBe('Unknown tag name "notag".');
+    expect(mockErrorHandling.mock.calls[0][0]).toBe(
+      'Unknown tag name "notag".'
+    );
   });
 });
 
