@@ -7,7 +7,13 @@ import CheerioReactBind, { TagRendererProps } from "../src/cheerio-react-bind";
 const tags = {
   div: ({ children }) => <div>{children}</div>,
   h1: ({ children }) => <h1>{children}</h1>,
-  p: ({ children }) => <p>{children}</p>
+  p: ({ children }) => <p>{children}</p>,
+  throw: ({ error }) => {
+    if (error) {
+      throw error;
+    }
+    return <div />;
+  }
 };
 
 const $ = Cheerio.load(
@@ -53,21 +59,22 @@ test("able to have text nodes and tag nodes as children", () => {
 });
 
 describe("error handling", () => {
+  (Error.prototype as any).suppressReactErrorLogging = true;
   test("throws when there is a unknown tag", () => {
-    (Error.prototype as any).suppressReactErrorLogging = true;
+    // This test will cause a lot of spam
+    // Related issue https://github.com/airbnb/enzyme/issues/1255
     Enzyme.mount(
       <CheerioReactBind tags={tags} $elem={$("div").first()} $={$} />
     );
     $("div").append("<notag />");
     expect(() => {
       $("div").update();
-    }).toThrow('Unknown tag name "notag".');
-    (Error.prototype as any).suppressReactErrorLogging = false;
+    }).toThrowErrorMatchingSnapshot();
   });
 
   test("errorHandling runs when an error is thrown", () => {
     const mockErrorHandling = jest.fn();
-    Enzyme.render(
+    Enzyme.mount(
       <CheerioReactBind
         errorHandler={mockErrorHandling}
         tags={tags}
@@ -79,9 +86,42 @@ describe("error handling", () => {
     $("div").update();
 
     expect(mockErrorHandling.mock.calls[0][0]).toBe(
-      'Unknown tag name "notag".'
+      'There was an error rendering a tag at "/": "TypeError: Unknown tag name "notag"."'
     );
   });
+
+  test("test", () => {
+    const mockErrorHandling = jest.fn();
+    const $mock = Cheerio.load(
+      `
+      <div>
+        <throw error="oops" />
+      </div>
+    `,
+      { xmlMode: true }
+    );
+
+    Enzyme.mount(
+      <CheerioReactBind
+        errorHandler={mockErrorHandling}
+        tags={tags}
+        $elem={$mock("div").first()}
+        $={$mock}
+      />
+    );
+
+    expect(mockErrorHandling.mock.calls[0][0]).toBe(
+      'There was an error rendering a tag at "/0:throw/": "oops"'
+    );
+  });
+
+  test("throws when neither tags nor tagRenderer are passed", () => {
+    expect(() => {
+      Enzyme.render(<CheerioReactBind $elem={$("div").first()} $={$} />);
+    }).toThrow('You must pass a "tagRenderer" prop or a "tags" prop.');
+  });
+
+  (Error.prototype as any).suppressReactErrorLogging = false;
 });
 
 describe("tagRenderer", () => {
@@ -149,12 +189,6 @@ describe("tagRenderer", () => {
     );
     expect(wrapper.html()).toMatchSnapshot();
   });
-});
-
-test("throws when neither tags nor tagRenderer are passed", () => {
-  expect(() => {
-    Enzyme.render(<CheerioReactBind $elem={$("div").first()} $={$} />);
-  }).toThrow('You must pass a "tagRenderer" prop or a "tags" prop.');
 });
 
 test("tagRenderer gets passed the location of the tag", () => {

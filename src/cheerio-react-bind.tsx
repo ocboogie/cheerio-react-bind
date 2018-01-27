@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import TagError from "./TagError";
+
 declare global {
   interface Cheerio {
     update: () => void;
@@ -33,6 +35,7 @@ export interface CheerioReactBindState {
   attributes: {
     [attr: string]: any;
   };
+  hasError: boolean;
 }
 
 export default class CheerioReactBind extends React.Component<
@@ -41,7 +44,6 @@ export default class CheerioReactBind extends React.Component<
 > {
   public location: string;
   public tagName: string;
-  public errorThrown = false;
 
   constructor(props: CheerioReactBindProps) {
     super(props);
@@ -66,13 +68,7 @@ export default class CheerioReactBind extends React.Component<
       if (
         !Object.prototype.hasOwnProperty.call(this.props.tags, this.tagName)
       ) {
-        const errMsg = `Unknown tag name "${this.tagName}".`;
-        if (this.props.errorHandler) {
-          this.props.errorHandler(errMsg);
-          this.errorThrown = true;
-        } else {
-          throw new TypeError(errMsg);
-        }
+        throw new TypeError(`Unknown tag name "${this.tagName}".`);
       }
     }
 
@@ -110,7 +106,8 @@ export default class CheerioReactBind extends React.Component<
       .get();
     const state: CheerioReactBindState = {
       attributes: this.props.$elem.attr(),
-      children
+      children,
+      hasError: false
     };
     if (initial) {
       this.state = state;
@@ -119,9 +116,23 @@ export default class CheerioReactBind extends React.Component<
     }
   }
 
+  public componentDidCatch(error: Error) {
+    if (error instanceof TagError) {
+      throw TagError;
+    }
+
+    const err = new TagError(error, this.location);
+    if (!this.props.errorHandler) {
+      throw err;
+    }
+
+    this.props.errorHandler(err.message);
+    this.setState({ hasError: true });
+  }
+
   public render() {
-    if (this.errorThrown) {
-      return <div />;
+    if (this.state.hasError) {
+      return <h1>Something went wrong.</h1>;
     }
 
     if (this.props.tagRenderer) {

@@ -8,6 +8,8 @@ exports[`able to have text nodes and tag nodes as children 1`] = `
     </div>"
 `;
 
+exports[`error handling throws when there is a unknown tag 1`] = `"There was an error rendering a tag at \\"/\\": \\"TypeError: Unknown tag name \\"notag\\".\\""`;
+
 exports[`tagRenderer renders 1`] = `"<span><h2>quux</h2></span>"`;
 
 exports[`update the Cheerio dom when the React dom is updated 1`] = `"<div><p>Paragraph</p></div>"`;
