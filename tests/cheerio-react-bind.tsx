@@ -121,6 +121,32 @@ describe("error handling", () => {
     }).toThrow('You must pass a "tagRenderer" prop or a "tags" prop.');
   });
 
+  test.only("use errorComponent when an error is thrown", () => {
+    const mockErrorHandling = jest.fn();
+    const $mock = Cheerio.load(
+      `
+      <div>
+        <throw error="oops" />
+      </div>
+    `,
+      { xmlMode: true }
+    );
+
+    const errorComponent = () => <h1>Oh no!</h1>;
+
+    const wrapper = Enzyme.mount(
+      <CheerioReactBind
+        errorHandler={mockErrorHandling}
+        errorComponent={errorComponent}
+        tags={tags}
+        $elem={$mock("div").first()}
+        $={$mock}
+      />
+    );
+
+    expect(wrapper.contains(<h1>Oh no!</h1>)).toBeTruthy();
+  });
+
   (Error.prototype as any).suppressReactErrorLogging = false;
 });
 

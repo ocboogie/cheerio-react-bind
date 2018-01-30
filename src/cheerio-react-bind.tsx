@@ -14,9 +14,19 @@ export interface TagRendererProps {
   attributes: { [key: string]: any };
 }
 
+export interface ComponentDidCatchArgs {
+  error?: Error;
+  info?: React.ErrorInfo;
+}
+
+export type ErrorComponentProps = ComponentDidCatchArgs;
+
 export interface CheerioReactBindProps {
   $elem: Cheerio;
   $: CheerioStatic;
+  errorComponent?:
+    | React.ComponentClass<ErrorComponentProps>
+    | React.StatelessComponent<ErrorComponentProps>;
   tags?: {
     [tagName: string]:
       | React.ComponentClass<any>
@@ -35,7 +45,7 @@ export interface CheerioReactBindState {
   attributes: {
     [attr: string]: any;
   };
-  hasError: boolean;
+  error: ComponentDidCatchArgs;
 }
 
 export default class CheerioReactBind extends React.Component<
@@ -93,6 +103,7 @@ export default class CheerioReactBind extends React.Component<
               key={index}
               $={this.props.$}
               $elem={$child}
+              errorComponent={this.props.errorComponent}
               tags={this.props.tags}
               tagRenderer={this.props.tagRenderer}
               location={`${this.location}${$child.index()}:${$child
@@ -107,7 +118,7 @@ export default class CheerioReactBind extends React.Component<
     const state: CheerioReactBindState = {
       attributes: this.props.$elem.attr(),
       children,
-      hasError: false
+      error: {}
     };
     if (initial) {
       this.state = state;
@@ -116,7 +127,7 @@ export default class CheerioReactBind extends React.Component<
     }
   }
 
-  public componentDidCatch(error: Error) {
+  public componentDidCatch(error: Error, info: React.ErrorInfo) {
     if (error instanceof TagError) {
       throw TagError;
     }
@@ -127,12 +138,17 @@ export default class CheerioReactBind extends React.Component<
     }
 
     this.props.errorHandler(err.message);
-    this.setState({ hasError: true });
+    this.setState({ error: { error, info } });
   }
 
   public render() {
-    if (this.state.hasError) {
-      return <h1>Something went wrong.</h1>;
+    if (this.state.error) {
+      if (this.props.errorComponent) {
+        const ErrorComponent = this.props.errorComponent;
+        return <ErrorComponent {...this.state.error} />;
+      } else {
+        return <div />;
+      }
     }
 
     if (this.props.tagRenderer) {
