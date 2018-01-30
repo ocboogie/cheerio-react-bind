@@ -45,7 +45,7 @@ export interface CheerioReactBindState {
   attributes: {
     [attr: string]: any;
   };
-  error: ComponentDidCatchArgs;
+  error?: ComponentDidCatchArgs;
 }
 
 export default class CheerioReactBind extends React.Component<
@@ -117,8 +117,7 @@ export default class CheerioReactBind extends React.Component<
       .get();
     const state: CheerioReactBindState = {
       attributes: this.props.$elem.attr(),
-      children,
-      error: {}
+      children
     };
     if (initial) {
       this.state = state;
