@@ -90,7 +90,7 @@ describe("error handling", () => {
     );
   });
 
-  test("test", () => {
+  test("catches all errors", () => {
     const mockErrorHandling = jest.fn();
     const $mock = Cheerio.load(
       `
