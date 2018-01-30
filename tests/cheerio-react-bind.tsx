@@ -121,7 +121,7 @@ describe("error handling", () => {
     }).toThrow('You must pass a "tagRenderer" prop or a "tags" prop.');
   });
 
-  test.only("use errorComponent when an error is thrown", () => {
+  test("use errorComponent when an error is thrown", () => {
     const mockErrorHandling = jest.fn();
     const $mock = Cheerio.load(
       `
