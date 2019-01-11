@@ -2,8 +2,6 @@
 
 This React component binds a Cheerio dom to its own dom with custom tags
 
-This is a core component for the [action-hub](https://github.com/ocboogie/action-hub) project.
-
 ## Example/usage:
 
 ```js
